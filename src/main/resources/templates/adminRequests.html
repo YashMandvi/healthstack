@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Verification Requests</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f5f7fa;
+            padding: 40px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #2c3e50;
+        }
+
+        table {
+            margin: auto;
+            width: 80%;
+            border-collapse: collapse;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 15px 20px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #3498db;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        form {
+            display: inline;
+        }
+
+        button {
+            padding: 6px 15px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .accept-btn {
+            background-color: #2ecc71;
+            color: white;
+        }
+
+        .reject-btn {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        .no-data {
+            text-align: center;
+            font-size: 18px;
+            color: #7f8c8d;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <h2>👨‍⚕️ Doctor Verification Requests</h2>
+
+    <div th:if="${#lists.isEmpty(doctors)}" class="no-data">
+        🎉 No pending requests at the moment!
+    </div>
+
+    <table th:if="${!#lists.isEmpty(doctors)}">
+        <tr>
+            <th>ID</th>
+            <th>Email</th>
+            <th>Actions</th>
+        </tr>
+        <tr th:each="doctor : ${doctors}">
+            <td th:text="${doctor.doctor_id}"></td>
+            <td th:text="${doctor.email}"></td>
+            <td>
+                <form th:action="@{/adminverify}" method="post">
+                    <input type="hidden" name="id" th:value="${doctor.doctor_id}" />
+                    <button class="accept-btn" type="submit">Accept ✅</button>
+                </form>
+
+                <form th:action="@{/adminreject}" method="post">
+                    <input type="hidden" name="id" th:value="${doctor.doctor_id}" />
+                    <button class="reject-btn" type="submit">Reject ❌</button>
+                </form>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

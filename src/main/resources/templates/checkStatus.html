@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Check Verification Status</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f0f8ff;
+            padding: 40px;
+            text-align: center;
+        }
+        h2 {
+            color: #2c3e50;
+        }
+        input[type="text"] {
+            padding: 10px;
+            width: 250px;
+            border: 2px solid #3498db;
+            border-radius: 10px;
+            margin-top: 15px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+        .result {
+            margin-top: 30px;
+            font-size: 18px;
+        }
+        .highlight {
+            color: #27ae60;
+            font-weight: bold;
+        }
+        .not-verified {
+            color: #e67e22;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h2>🔍 Check Your Verification Status</h2>
+    <form th:action="@{/checkStatus}" method="post">
+        <input type="text" name="doctorId" placeholder="Enter Your Doctor ID" required />
+        <br>
+        <button type="submit">Check Status</button>
+    </form>
+
+    <div class="result" th:if="${status != null}">
+        <p th:if="${status == 'verified'}">
+            ✅ <span class="highlight">You are Verified!</span><br>
+            You can login using:<br>
+            📧 Email: <b th:text="${email}"></b><br>
+            🔑 Password: <b th:text="${password}"></b>
+        </p>
+
+        <p th:if="${status == 'pending'}">
+            ⏳ <span class="not-verified">Your verification is still pending.</span><br>
+            Please be patient 🙏, you will be verified soon!
+        </p>
+
+        <p th:if="${status == 'not_found'}" style="color: red;">
+            ❌ No doctor found with this ID. Please check and try again.
+        </p>
+    </div>
+</body>
+</html>

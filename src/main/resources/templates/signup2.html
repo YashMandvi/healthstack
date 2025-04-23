@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Government Signup Portal</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+		body{
+				background-color: #024b37;
+				color : white;
+				}
+        .container {
+            max-width: 600px;
+            margin-top: 50px;
+        }
+        .card {
+            border: 1px solid #ddd;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+	
+	<nav class="navbar navbar-expand-lg">
+		<a class="navbar-brand ms-4 text-white fw-bold" href="#">HealthStack</a>
+	   </nav>
+	
+    <div class="container" style="margin-top: -10px;">
+        <div class="card shadow p-4">
+            <h2 class="text-center" style="color: #024b37;">Signup Portal</h2>
+            <p class="text-center text-muted">Register with your valid details</p>
+			
+            <form id="myForm" th:action="@{/action}" th:object="${user}" method="post">
+				
+                <div class="mb-3">
+                    <label class="form-label">First Name</label>
+                    <input name="firstName" id="name" type="text" class="form-control" th:field="*{firstName}" required>
+					<span id="name-error"></span>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Last Name</label>
+                    <input name="lastName" type="text" class="form-control" th:field="*{lastName}" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Gender</label><br>
+                    <input  th:field="*{gender}" type="radio" name="gender" value="Male"> Male
+                    <input  th:field="*{gender}" type="radio" name="gender" value="Female"> Female
+                    <input  th:field="*{gender}" type="radio" name="gender" value="Other"> Other
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Age</label>
+                    <input name="age" type="number" class="form-control" th:field="*{age}" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Father/Husband Name</label>
+                    <input name="fhname" type="text" class="form-control" th:field="*{fhname}" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Address</label>
+                    <textarea name="address" class="form-control" rows="2" th:field="*{address}" required></textarea>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">State</label>
+                    <select name="state" class="form-select" th:field="*{state}" required>
+                        <option value="ss" selected disabled>Select State</option>
+                        <option value="mp" >Madhya Pradesh</option>
+                        <option value="up">Uttar Pradesh</option>
+                        <option value="rajasthan">Rajasthan</option>
+                        <option value="bihar">Bihar</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">District</label>
+                    <select name="district" class="form-select" th:field="*{district}" required>
+                        <option value="ss" selected disabled>Select District</option>
+                        <option value="bhopal">Bhopal</option>
+                        <option value="indore">Indore</option>
+                        <option value="gwalior">Gwalior</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Tehsil</label>
+                    <select name="tehsil" class="form-select" th:field="*{tehsil}" required>
+                        <option value="ss" selected disabled>Select Tehsil</option>
+                        <option value="vidisha">Vidisha</option>
+                        <option value="narmdapuram">Hoshangabad</option>
+                        <option value="sehore">Sehore</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Village</label>
+                    <select name="village" class="form-select" th:field="*{village}" required>
+                        <option value="ss" selected disabled>Select Village</option>
+                        <option value="rampur">Rampur</option>
+                        <option value="gopalpur">Gopalpur</option>
+                        <option value="shivpuri">Shivpuri</option>
+                    </select>
+                </div>
+                <div class="text-center">
+                    <button onclick="show(event)"  type="submit" class="btn btn-success">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+	
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+	<script>
+		function show(event){
+				
+				event.preventDefault();
+				
+				let name = document.getElementById("name").value;
+				
+				if (name === "" || !/^[A-Za-z\s]{3,}$/.test(name)) {
+				        document.getElementById("name").style.borderColor = "Red";
+				        document.getElementById("name-error").style.display = "contents";
+				        document.getElementById("name-error").innerText = "*Enter a valid name (min 3 characters, only alphabets)";
+				        document.getElementById("name-error").style.color = "Red";
+				    } else {
+				        document.getElementById("name-error").style.display = "none";
+				        document.getElementById("name").style.borderColor = "Black";
+
+				        // ✅ VALID NAME, NOW SUBMIT
+				        document.getElementById("myForm").submit();
+				    }
+				}
+				
+	</script>
+</body>
+</html>

@@ -1,0 +1,98 @@
+body{
+background-color: #024b37;
+color : white;
+}
+         /*cih logo*/
+
+.cih{
+margin: 10px 50px;
+}
+.cih h1{
+font-size: 44px;
+    width: 80px;
+}
+.cih span pre{
+  margin: -71px 52px;
+    font-size: 10px;
+    width: 93px;
+}
+
+
+        /*dashboard*/
+
+.dashboard{
+  margin: 40px;
+}
+dl {
+      display: flex;
+      padding: 0; /* Remove padding */
+      margin: 0;  /* Remove margin */
+       justify-content: center; /* Horizontally center */
+      align-items: center; /* Vertically center (optional) */
+    }
+    /* dd ko horizontally arrange karo */
+    dd {
+      margin-right: 20px; /* Items ke beech mein space */
+         font-size: 18px;
+    color: #ccdb38;
+    font-weight: 600;
+}
+    a{
+     text-decoration: none;
+color: #ccdb38;
+    font-weight: 600;
+}
+a:hover{
+  color: white;
+}
+
+/*login*/
+
+   .login{
+background-color: #fff;
+    /* margin-left: auto; */
+    /* margin-right: 121px; */
+    width: 35rem;
+    /* margin-top: 1rem; */
+    height: auto;
+    border-radius: 27px;
+    color: black;
+    margin: auto;
+}
+label{
+ font-size: 19px;
+    padding: 5px 0px;
+}
+input{
+height: 30px;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 20px;
+    color: gray;
+    font-weight: 400;
+}
+input[type="submit"]{
+width: 10rem;
+    margin: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    background-color: #44e844;
+    color: white;
+}
+form{
+ display: grid;
+ padding: 6px 28px;
+}
+
+#official{ font-size: 16px;padding: 5px 14px;border-radius: 5px;margin-left: 18px;background-color: #2564d7;color: white;border-color: aliceblue;
+}
+#user{
+font-size: 16px;
+    padding: 5px 14px;
+    /* margin: 0px; */
+    border-radius: 5px;
+    margin-left: -17px;
+    background-color: #76d725;
+    color: white;
+    border-color: aliceblue;
+}

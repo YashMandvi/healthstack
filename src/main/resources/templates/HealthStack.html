@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Health Registry</title>
+   <link rel="icon" href="/images/internet.png">
+    <link rel="stylesheet" href="/css/HealthStack.css">
+		<style>
+		  #btn:hover {
+		    background: linear-gradient(145deg, #7dffb2, #d9ffc9);
+		    transform: scale(1.05);
+		    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+		  }
+		  
+		  .button-container {
+		        display: flex;
+		        flex-direction: column;
+		        align-items: center;
+		        gap: 20px; /* space between buttons */
+		      }
+
+		      .btn1 {
+		        font-size: 16px;
+		        padding: 10px 24px;
+		        border-radius: 5px;
+		        background-color: #2564d7;
+		        color: white;
+		        border: none;
+		        cursor: pointer;
+		        transition: all 0.3s ease-in-out;
+		        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+		      }
+
+		      .btn2 {
+		        font-size: 16px;
+		        padding: 10px 24px;
+		        border-radius: 8px;
+		        background: linear-gradient(145deg, #a1ffce, #faffd1);
+		        color: #0f0f0f;
+		        border: none;
+		        cursor: pointer;
+		        transition: all 0.3s ease-in-out;
+		        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+				margin: 5px;
+		      }
+
+		      .btn1:hover {
+		        background-color: #194bb3;
+		        transform: scale(1.05);
+		      }
+
+		      .btn2:hover {
+		        background: linear-gradient(145deg, #7dffb2, #d9ffc9);
+		        transform: scale(1.05);
+		        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+		      }
+			  
+			  #log {
+			        background: white;
+			        padding: 1rem 2rem;
+			        border-radius: 12px;
+			        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+			        width: 340px;
+			      }
+
+			      .const {
+			        width: 100%;
+			        padding: 3px;
+			        margin: 1px 0;
+			        border-radius: 6px;
+			        border: 1px solid #ccc;
+			        font-size: 15px;
+			      }
+
+			      .radio-group {
+			        margin: 10px 0;
+			        display: flex;
+			        gap: 10px;
+			        align-items: center;
+			      }
+
+			      .captcha-box {
+			        background: #f0f0f0;
+			        padding: 3px;
+			        border-radius: 10px;
+			        margin: 10px 0;
+			      }
+
+			      #capcha-text {
+			        font-size: 22px;
+			        color: red;
+			        font-family: cursive;
+			        letter-spacing: 2px;
+			      }
+				  
+				  #capcha-text-user {
+				  		        font-size: 22px;
+				  		        color: red;
+				  		        font-family: cursive;
+				  		        letter-spacing: 2px;
+				  		      }
+
+			      #capoff {
+			        margin-top: 10px;
+			        width: 94%;
+			        padding: 8px;
+			        border-radius: 6px;
+			        border: 1px solid aliceblue;
+			        text-align: center;
+			        font-size: 16px;
+			        color: #333;
+			      }
+				   
+				  #capoff-user {
+				  		        margin-top: 10px;
+				  		        width: 94%;
+				  		        padding: 8px;
+				  		        border-radius: 6px;
+				  		        border: 1px solid aliceblue;
+				  		        text-align: center;
+				  		        font-size: 16px;
+				  		        color: #333;
+				  		      }
+
+			      #reload {
+			        width: 22px;
+			        margin-left: 10px;
+			        cursor: pointer;
+			        vertical-align: middle;
+			      }
+
+			      .btn {
+			        width: 100%;
+			        background-color: #2564d7;
+			        color: white;
+			        padding: 12px;
+			        border: none;
+			        border-radius: 8px;
+			        font-size: 16px;
+			        cursor: pointer;
+			        margin-top: 10px;
+			      }
+
+			      .btn:hover {
+			        background-color: #1a4cb5;
+			      }
+				  
+				  .btn-custom {
+				             background-color: #1976d2;
+				             color: white;
+				         }
+						
+				  
+			    </style>
+		  
+		
+		
+		
+ <head>
+<body>
+	
+	
+	<div>
+		
+		<div>
+	   
+	   <!--cih logo-->
+
+	  <div class="cih">
+	     <h1>NHI</h1>
+	      <span><pre style="margin: -71px 7px;">
+	       National
+	       Health 
+	       Informatics</pre></span>
+	  </div>
+	  
+		</div>
+
+	   <!--dashboard-->
+
+	   <div class="dashboard">
+	      <dl>
+	        <dd> <a href="dashboard">Dashboard</a ></dd>
+			 <dd> <a href="checkStatus">Check Status</a></dd>
+	       </dl>
+	    </div>
+		
+	   </div>
+
+
+  <!--container-->
+
+<div class="container">
+
+    <!--definition-->
+ 
+   <div id="definition">
+      <h1>Health Stack</h1>
+      <h2>Health Registery System</h2>
+     <p >A well-organized and meticulously scrutinized health database will ensure that citizens do not have to go from one office to another in search of health benefits. Moreover, it will enable healthcare departments to tackle existing issues more effectively. The Department of Health and Family Welfare, in collaboration with the Central Informatics Hub (CIH), has developed a comprehensive software solution called Health Registration & Unified Beneficiary Information System (HRUBIS).
+</p>
+
+<button onclick="location.href='healthstack'" class="btn2">About Us</button> 
+
+
+    </div>
+
+        <!--login-->
+<div class="login">
+
+  <img style="width: 100px;display: flex;justify-content: center;margin: auto;padding: 20px;" src="/images/user.png">
+
+  <h5 style="font-size: 25px;font-weight: 500;margin: 7px 29px;text-align:center;">Log In As 
+   <Button id="official" onclick="show('log')">Admin</Button>
+   <Button id="user"  onclick="show('us')">User</Button></h5>
+
+   <!--official-->
+
+
+   <div id="log">
+	
+	<form th:action="@{/adminLogin}" th:object="${admin}" method="POST">
+	
+     <input id="nameoff" class="const" type="text" th:field="*{admin_Id}" placeholder="Insert Admin-Id" required />
+
+     <div class="radio-group">
+       <input id="passoff" type="radio" name="type" checked required> <label for="passoff">Password</label>
+       <input id="otp" type="radio" name="type" disabled> 
+       <label for="otp" style="color: grey; cursor: not-allowed;">OTP</label>
+     </div>
+
+     <input id="passwoff" class="const" type="password" th:field="*{Password}" placeholder="Enter Password" required />
+
+     <div class="captcha-box">
+       <div style="margin-bottom: 5px; color: #555;">Enter Captcha</div>
+       <div>
+         <span id="capcha-text"></span>
+         <img id="reload" onclick="generateCaptcha()" src="https://img.icons8.com/ios-filled/50/refresh.png" alt="Reload">
+       </div>
+	  
+       <input id="capoff" type="text" placeholder="Enter Captcha Here">
+     </div>
+
+	 <input class="btn" type="submit" >
+	</form>
+	 
+	<div class="button-container">
+	   <button onclick="location.href='doctorlogin'" class="btn2">Doctor Login?</button>
+	 </div>
+
+	
+        </div>
+
+  <!--user-->
+
+
+  <div id="us">
+   <form id="user-login-form" th:action="@{/login}" th:object="${user}" method="POST">
+
+	<input id="nameoff" class="const" type="email" th:field="*{email}" placeholder="Insert Email-Id" required />
+
+	     <div class="radio-group">
+	       <input id="passoff" type="radio" name="type" checked required> <label for="passoff">HealthId</label>
+	       <input id="otp" type="radio" name="type" disabled> 
+	       <label for="otp" style="color: grey; cursor: not-allowed;">OTP</label>
+	     </div>
+
+	     <input id="passwoff" class="const" type="password" th:field="*{healthId}" placeholder="Enter HealthId" required />
+
+	     <div class="captcha-box">
+	       <div style="margin-bottom: 5px; color: #555;">Enter Captcha</div>
+	       <div>
+	         <span id="capcha-text-user"></span>
+	         <img id="reload-user" onclick="generateUserCaptcha()" src="https://img.icons8.com/ios-filled/50/refresh.png" alt="Reload">
+	       </div>
+		  
+	       <input id="capoff-user" type="text" placeholder="Enter Captcha Here">
+	     </div>
+
+		 <input class="btn" type="submit" >
+  
+</form>
+
+  <Button onclick="location.href='instruction'" style="font-size: 16px;
+    padding: 6px 15px;
+     margin-left: 16px;
+    border-radius: 5px;
+    margin-left: -5px;
+    background-color: #76d725;
+    color: white;
+    border-color: aliceblue; margin :1rem;    margin: 1rem;
+    margin-top: 10px;">Sign Up</Button>
+        </div>
+
+ 
+ 
+
+</div>
+
+
+
+</div>
+
+</div>
+
+</body>
+
+
+<script>
+  let currentVisible = null; // Track which content is visible
+
+    function show(id) {
+        let element = document.getElementById(id);
+
+             // If clicking on the currently open section, hide it
+        if (currentVisible === id) {
+            element.style.display = "none";
+            currentVisible = null;
+        } else {
+
+            // Hide previously open section
+            if (currentVisible) {
+                document.getElementById(currentVisible).style.display = "none";
+            }
+
+            // Show new section
+            element.style.display = "block";
+            currentVisible = id;
+   }
+        
+    }
+
+	let generatedCaptcha = "";
+
+	  function generateCaptcha() {
+	    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+	    let captcha = '';
+	    for (let i = 0; i < 6; i++) {
+	      captcha += chars.charAt(Math.floor(Math.random() * chars.length));
+	    }
+	    generatedCaptcha = captcha;
+	    document.getElementById('capcha-text').textContent = captcha;
+	  }
+
+	  // Jab form submit hoga
+	  document.addEventListener("DOMContentLoaded", function () {
+	    generateCaptcha(); // Initial captcha load
+
+	    const form = document.querySelector("form");
+	    form.addEventListener("submit", function (e) {
+	      const entered = document.getElementById('capoff').value.trim();
+
+	      if (entered === "") {
+	        alert("⚠️ Please enter the captcha!");
+	        e.preventDefault(); // Form submit rok do
+	      } else if (entered !== generatedCaptcha) {
+	        alert("❌ Captcha incorrect! Please try again.");
+	        generateCaptcha(); // Naya captcha
+	        document.getElementById('capoff').value = "";
+	        e.preventDefault(); // Submit mat hone do
+	      } else {
+	        // ✅ Captcha matched — allow submit
+	        alert("✅ Captcha matched! matching for credentials...");
+	        // form will automatically submit
+	      }
+	    });
+	  });
+
+
+</script>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    let errorMsg = /*[[${error}]]*/ null;
+    if (errorMsg !== null) {
+        alert(errorMsg);
+    }
+    /*]]>*/
+</script>
+
+<script>
+  let captchaUser = "";
+
+  function generateUserCaptcha() {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let captcha = '';
+    for (let i = 0; i < 6; i++) {
+      captcha += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    captchaUser = captcha;
+    document.getElementById('capcha-text-user').textContent = captcha;
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    generateUserCaptcha();
+
+    const userForm = document.getElementById("user-login-form");
+    if (userForm) {
+      userForm.addEventListener("submit", function (e) {
+        const entered = document.getElementById('capoff-user').value.trim();
+
+        if (entered === "") {
+          alert("⚠️ Please enter the captcha!");
+          e.preventDefault();
+        } else if (entered !== captchaUser) {
+          alert("❌ Captcha incorrect! Please try again.");
+          generateUserCaptcha();
+          document.getElementById('capoff-user').value = "";
+          e.preventDefault();
+        } else {
+          alert("✅ Captcha matched! Logging in...");
+        }
+      });
+    }
+  });
+</script>
+
+
+
+
+</html>

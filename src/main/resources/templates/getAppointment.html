@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Get Appointment</title>
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background: #f0f2f5;
+        }
+
+        .card {
+            margin-bottom: 30px;
+            border: none;
+            border-radius: 15px;
+            transition: all 0.3s ease-in-out;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .card:hover {
+            transform: scale(1.03);
+        }
+
+        .form-select {
+            max-width: 300px;
+            margin: 20px auto;
+        }
+
+        .form-title {
+            font-weight: bold;
+        }
+
+        .btn-primary {
+            background-color: #4e73df;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #2e59d9;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 32px;
+            font-weight: bold;
+            color: #343a40;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2 class="section-title">💼 Book Appointment with Doctors</h2>
+	
+	<div th:if="${msg}" class="alert alert-success text-center" role="alert">
+	        <span th:text="${msg}"></span>
+	    </div>
+
+    <!-- 🔍 Specialization Filter -->
+    <form th:action="@{/getAppointment}" method="get" class="form-inline justify-content-center mt-4 mb-4">
+        <select name="specialization" class="form-control mr-2" required>
+            <option value="">-- Select Specialization --</option>
+            <option th:each="spec : ${specializations}"
+                    th:value="${spec}"
+                    th:text="${spec}"
+                    th:selected="${spec == selectedSpecialization}">
+            </option>
+        </select>
+        <button type="submit" class="btn btn-primary">🔍 Filter</button>
+    </form>
+
+    <!-- Doctor Cards -->
+    <div class="row" th:if="${doctorList}">
+        <div class="col-md-4" th:each="doc : ${doctorList}">
+            <div class="card">
+               
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${doc.name}">Doctor Name</h5>
+                    <p class="card-text" th:text="'🏥 Hospital: ' + ${doc.hospital}">Hospital</p>
+                    <p class="card-text" th:text="'📍 Address: ' + ${doc.address}">Address</p>
+                    <p class="card-text text-primary font-weight-bold"
+                       th:text="'🩺 Specialization: ' + ${doc.specialization}">Specialization</p>
+
+                    <form th:action="@{/bookAppointment}" method="post">
+                        <input type="hidden" name="doctorId" th:value="${doc.doctor_id}"/>
+                        <input type="hidden" name="doctorName" th:value="${doc.name}"/>
+                        <input type="hidden" name="doctorSpecialization" th:value="${doc.specialization}"/>
+
+                        <div class="form-group mt-3">
+                            <label class="form-title">📅 Select Date:</label>
+                            <input type="date" name="appointmentDate" class="form-control" required/>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-block mt-3">
+                            📥 Get Appointment
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

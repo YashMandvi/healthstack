@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>User Dashboard - Digital Health Card</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: #f4f6f8;
+      color: #333;
+    }
+
+    nav {
+      background: #2e86de;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #fff;
+    }
+
+    nav h1 {
+      font-size: 1.5rem;
+    }
+
+    nav ul {
+      display: flex;
+      gap: 1.5rem;
+      list-style: none;
+    }
+
+    nav ul li a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+
+    nav ul li a:hover {
+      color: #d1ecf1;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 2rem auto;
+      padding: 2rem;
+      background: #fff;
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .container h2 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      color: #2e86de;
+    }
+
+    .card {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .card div {
+      margin-bottom: 1rem;
+    }
+
+    .label {
+      font-weight: 600;
+      color: #555;
+    }
+
+    .value {
+      margin-top: 0.2rem;
+      color: #222;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1rem;
+      margin-top: 2rem;
+      color: #777;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <h1>HealthStack</h1>
+    <ul>
+		<li><a href="#">History</a></li>
+      <li><a href="getAppointment">Get Appointment</a></li>
+      <li><a href="checkAppointment">Check Appointments</a></li>
+      <li><a href="/test">Logout</a></li>
+    </ul>
+  </nav>
+
+  <div class="container">
+    <h2>Welcome to Your Health Dashboard</h2>
+    <p style="text-align: center; margin-bottom: 2rem; color: #666;">
+      Here’s your personalized Digital Health Card. Keep it safe and up-to-date. Your health is our priority.
+    </p>
+
+    <div class="card">
+      <div>
+        <div class="label">Email</div>
+        <div class="value" th:text="${user.email}"></div>
+      </div>
+      <div>
+        <div class="label">Unique Health ID</div>
+        <div class="value" th:text="${user.healthId}">UHID12345678</div>
+      </div>
+      <div>
+        <div class="label">First Name</div>
+        <div class="value" th:text="${user.firstName}"></div>
+      </div>
+      <div>
+        <div class="label">Last Name</div>
+        <div class="value" th:text="${user.lastName}"></div>
+      </div>
+      <div>
+        <div class="label">Age</div>
+        <div class="value" th:text="${user.age}"></div>
+      </div>
+      <div>
+        <div class="label">Gender</div>
+        <div class="value" th:text="${user.gender}"></div>
+      </div>
+      <div>
+        <div class="label">Father's/Husband's Name</div>
+        <div class="value" th:text="${user.fhname}"></div>
+      </div>
+      <div>
+        <div class="label">Address</div>
+        <div class="value" th:text="${user.address}"></div>
+      </div>
+      <div>
+        <div class="label">State</div>
+        <div class="value" th:text="${user.state}">Madhya Pradesh</div>
+      </div>
+      <div>
+        <div class="label">District</div>
+        <div class="value" th:text="${user.district}">Vidisha</div>
+      </div>
+      <div>
+        <div class="label">Village</div>
+        <div class="value" th:text="${user.village}">Sironj</div>
+      </div>
+      <div>
+        <div class="label">Tehsil</div>
+        <div class="value" th:text="${user.tehsil}">Sironj</div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    &copy; 2025 Digital Health Portal | Designed with care for every citizen’s wellbeing 💙
+  </footer>
+</body>
+</html>

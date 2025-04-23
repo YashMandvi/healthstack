@@ -1,0 +1,55 @@
+<!-- File: templates/doctor_success.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Doctor Registered</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins&display=swap">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #00b09b, #96c93d);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #fff;
+        }
+        .card {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            max-width: 500px;
+        }
+        .card h1 {
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+        .card p {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        .highlight {
+            font-size: 24px;
+            font-weight: bold;
+            color: #fcd34d;
+        }
+        .card small {
+            font-size: 14px;
+            color: #d1d5db;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>✅ Profile Submitted Successfully!</h1>
+        <p>Your Doctor ID is: <span class="highlight" th:text="${doctor.doctor_id}"></span></p>
+        <p>Please wait for admin verification.</p>
+        <small>You will be notified once your profile is approved. please remember your id for future refrence..</small>
+    </div>
+</body>
+</html>

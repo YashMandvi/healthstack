@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Signup page</title>
+<link rel="stylesheet" href="/css/signup.css">
+<link rel="icon" href="/images/internet.png">
+</head>
+<body>
+
+   <!--cih-->
+
+ <div class="cih">
+     <h1>CIH</h1>
+      <span><pre>
+       Central
+       Informatics 
+       hub</pre></span>
+  </div>
+
+  <!--dashboard-->
+
+ <div class="dashboard">
+      <dl>
+        <dd> <a href="#">Dashboard</a ></dd>
+         <dd> <a href="#">Check Enrolment Status</a></dd>
+       </dl>
+    </div>
+
+  <!--login-->
+
+<div class="login">
+
+  <img style="width: 100px;display: flex;justify-content: center;margin: auto;padding: 20px;" src="/images/user.png">
+
+  <h5 style="font-size: 25px;font-weight: 500;margin: 7px 29px;text-align:center;"><sup style="color:red;">*</sup>Enter Below Details Carefully</h5>
+
+   <!--official-->
+
+  <div id="log">
+   
+    <form id="myForm" th:action="@{/action}" th:object="${user}" method="post">
+		
+  <label for="name">Name</label>
+  <input id="name" name="id" type="text" th:field="*{name}" placeholder="Enter Your Name" required autocomplete="on"/>
+  <span id="name-error"></span>
+   <label for="email">Email</label>
+  <input id="email" name="email" type="text" th:field="*{email}"  placeholder="Enter Email" required autocomplete="on"/>
+  <span id="email-error"></span>
+	
+   <div>
+  <input id="male" name="gender" type="radio" value="male"  th:field="*{gender}" /><label for="male"><sup>Male</sup></label>
+  <input id="female" name="gender" type="radio" value="Female"  th:field="*{gender}" /><label for="female"><sup>Female</sup></label>
+   </div>
+   <span id="gen-error"></span>
+
+   <label for="pass">Password</label>
+  <input id="pass" name="pass" type="password" required th:field="*{password}"/>
+  <span id="pass-error"></span>
+  
+   <!--capcha-->
+
+ <div style="    background: #f0f0f0;
+    width: 21rem;
+    height: 6rem;
+    margin: 12px 84px;
+    border-radius: 10px;
+"><pre id="cpc" style="    margin: 0px 14px;
+    padding: 8px 0px;
+    font-size: 14px;
+    color: grey;
+">Enter Capcha</pre>
+  <h6 id="capcha" style="margin: 3px 48px;
+    font-size: 21px;
+    color: red;
+    font-family: cursive;
+"><span id="capcha-text"></span><img onclick="refreshCaptcha()" style="width: 23px;
+    margin: -3px 10px;
+" src="/images/reload.png"><input id="capoff" style="margin: -94px -34px;
+    margin-left: 7px;
+    /* margin-top: -14px; */
+    width: 110px;
+    padding: 10px 0px;
+    border-radius: 6px;
+    border-color: aliceblue;
+    color: grey; text-align: center;
+    font-size: 15px;" type="text" /></h6>
+    </div>
+
+   <input onclick="show(event)" id="subm" name="sub" type="submit"/>
+</form>
+
+ 
+        </div>
+</div>
+
+<div id="con">
+</div>
+
+</body>
+<script>
+	
+	let entercaptcha = "";
+	
+	function show(event){
+		
+		event.preventDefault();
+		
+		let name = document.getElementById("name").value;
+		let email = document.getElementById("email").value;
+		//let gender =  document.getElementById("gender").value;
+		let genderSelected = document.querySelector('input[name="gender"]:checked');
+		let pass = document.getElementById("pass").value;
+		
+		let capcha = document.getElementById("capoff").value;
+		
+		if(name=="" || !/^[A-Za-z\s]{3,}$/.test(name)){
+					document.getElementById("name").style.borderColor = "Red";
+					document.getElementById("name-error").style.display="contents";	
+					document.getElementById("name-error").innerText = "*Enter a valid name (min 3 characters, only alphabets)";
+					document.getElementById("name-error").style.color = "Red";
+				}
+				else if(name!="" && /^[A-Za-z\s]{3,}$/.test(name)){
+									document.getElementById("name-error").style.display="none";	
+									document.getElementById("name").style.borderColor = "Black";
+								}
+							
+				
+			 if(email=="" || !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)){
+									document.getElementById("email").style.borderColor = "Red";
+									document.getElementById("email-error").innerText = "*Please Enter a valid Email";
+									document.getElementById("email-error").style.display="contents";	
+									document.getElementById("email-error").style.color = "Red";
+								}
+								else if(email!="" && /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)){
+																	document.getElementById("email-error").style.display="none";	
+																	document.getElementById("email").style.borderColor = "Black";
+																}
+																
+																
+
+					  if (!genderSelected) {
+						   document.getElementById("gen-error").innerText = "*Please select a gender!";
+						   document.getElementById("gen-error").style.display="contents";
+						   							document.getElementById("gen-error").style.color = "Red";
+																            }
+																			else if(genderSelected){
+																				document.getElementById("gen-error").style.display="none";
+																			}
+															
+			if (pass == "" || !/^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{6,}$/.test(pass)) {
+			document.getElementById("pass").style.borderColor = "Red";
+							document.getElementById("pass-error").style.display="contents";	
+							document.getElementById("pass-error").innerText = "*Password must be 6+ chars, 1 uppercase, 1 number";
+							document.getElementById("pass-error").style.color = "Red";
+					} else if (pass!="" && /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{6,}$/.test(pass)) {
+					document.getElementById("pass-error").style.display="none";	
+					document.getElementById("pass").style.borderColor = "Black";										      
+				     }
+															
+				
+		 if(capcha==""){
+			document.getElementById("cpc").innerText = "*Please enter captcha";
+			document.getElementById("cpc").style.color = "Red";
+			//alert("bhai capcha to bhar de");
+		}
+		else if(capcha!=entercaptcha){
+			document.getElementById("cpc").innerText = "*Wrong Captcha";
+						document.getElementById("cpc").style.color = "Red";
+		}
+		else{
+		document.getElementById("myForm").submit();
+		}
+	}
+
+   function generateCaptcha() {
+    let chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+     let captcha = "";
+    for (let i = 0; i < 6; i++) {
+        captcha += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+ document.getElementById("capcha-text").innerText = captcha;
+    return captcha;
+   
+}
+
+  function refreshCaptcha() {
+            entercaptcha = generateCaptcha(); // Update global variable
+            console.log("New Captcha:", entercaptcha);
+        }
+
+
+
+  
+
+</script>
+</html>

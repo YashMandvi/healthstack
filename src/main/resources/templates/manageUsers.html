@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Manage Users - Admin Panel</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+    .navbar {
+      background-color: #0d6efd;
+    }
+    .navbar-brand, .nav-link, .navbar-text {
+      color: white !important;
+    }
+    .card-title {
+      font-size: 1.3rem;
+      font-weight: 600;
+    }
+    .card-text {
+      font-size: 0.95rem;
+      margin-bottom: 6px;
+    }
+    .card {
+      border-radius: 16px;
+      transition: all 0.3s ease-in-out;
+    }
+    .card:hover {
+      transform: scale(1.02);
+      box-shadow: 0px 10px 20px rgba(0,0,0,0.1);
+    }
+    .section-heading {
+      font-weight: 700;
+      font-size: 2rem;
+    }
+    .btn-remove {
+      padding: 5px 12px;
+      font-size: 0.85rem;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 🧭 Navbar -->
+  <nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">🛡️ Admin Dashboard</a>
+      <div class="collapse navbar-collapse">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" href="#">Manage Users</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/test">🏠 Home</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- 🔍 Search (future use) -->
+  <div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h2 class="section-heading">👥 Manage Users</h2>
+      <input type="text" class="form-control w-25" placeholder="🔍 Search User...">
+    </div>
+
+    <!-- ✅ Flash Message -->
+    <div th:if="${success}" class="alert alert-success text-center" th:text="${success}"></div>
+    <div th:if="${users.size() == 0}" class="alert alert-warning text-center">
+      😢 No users found
+    </div>
+
+    <!-- 🧾 User Cards Grid -->
+    <div class="row" th:each="user : ${users}">
+      <div class="col-md-4 col-sm-6 mb-4">
+        <div class="card shadow-sm border-0 h-100">
+          <div class="card-body">
+            <h5 class="card-title" th:text="${user.firstName + ' ' + user.lastName}">User Name</h5>
+            <p class="card-text"><strong>Email:</strong> <span th:text="${user.email}">example@mail.com</span></p>
+            <p class="card-text"><strong>Health ID:</strong> <span th:text="${user.healthId}">ABCD1234</span></p>
+            <p class="card-text"><strong>Age:</strong> <span th:text="${user.age}"></span></p>
+            <p class="card-text"><strong>Gender:</strong> <span th:text="${user.gender}"></span></p>
+            <p class="card-text"><strong>Father's Name:</strong> <span th:text="${user.fhname}"></span></p>
+            <p class="card-text"><strong>Address:</strong> <span th:text="${user.address}"></span></p>
+            <p class="card-text"><strong>Village:</strong> <span th:text="${user.village}"></span></p>
+            <p class="card-text"><strong>Tehsil:</strong> <span th:text="${user.tehsil}"></span></p>
+            <p class="card-text"><strong>District:</strong> <span th:text="${user.district}"></span></p>
+            <p class="card-text"><strong>State:</strong> <span th:text="${user.state}"></span></p>
+
+            <div class="d-flex justify-content-end mt-3">
+              <form th:action="@{/removeUser}" method="post">
+                <input type="hidden" name="id" th:value="${user.id}" />
+                <button type="submit" class="btn btn-danger btn-remove">🗑 Remove</button>
+              </form>
+			  <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal" 
+			              th:attr="data-bs-target='#historyModal__${user.id}'">📄 History</button>
+            </div>
+          </div>
+		  
+		  
+		  <!-- 🧾 History Modal -->
+		  <div class="modal fade" th:id="'historyModal__' + ${user.id}" tabindex="-1" aria-hidden="true">
+		    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+		      <div class="modal-content">
+		        <div class="modal-header">
+		          <h5 class="modal-title">📝 History of 
+		            <span th:text="${user.firstName + ' ' + user.lastName}"></span>
+		          </h5>
+		          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		        </div>
+
+		        <div class="modal-body">
+		          <div th:if="${userRemarksMap[user.id]?.size() == 0}">
+		            <p class="text-muted">No remarks available for this user.</p>
+		          </div>
+
+		          <!-- 📄 Previous Remarks -->
+		          <div th:if="${userRemarksMap[user.id]?.size() > 0}">
+		            <h6>Previous Doctor Visits:</h6>
+		            <ul class="list-group" th:each="remark : ${userRemarksMap[user.id]}">
+		              <li class="list-group-item">
+		                <strong th:text="'Dr. Id: ' + ${remark.doctorId}"></strong> — 
+		                <span th:text="${remark.remarks}"></span><br>
+		                <small class="text-muted" th:text="${#temporals.format(remark.timestamp, 'dd-MM-yyyy hh:mm a')}"></small>
+		              </li>
+		            </ul>
+		          </div>
+		        </div>
+
+		        <div class="modal-footer">
+		          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+		        </div>
+		      </div>
+		    </div>
+		  </div>
+
+		  
+		  
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
