@@ -36,10 +36,12 @@ import jakarta.servlet.http.HttpSession;
 public class UserComponent {
 	
 	@Autowired
-	UserService us;
+	UserService us;  
 	
 	 @Autowired
 	    private EmailService emailService;
+	 
+	 //homepage test 
 
 	@GetMapping("/test")
 	public String homePage(Model model) {
@@ -49,29 +51,139 @@ public class UserComponent {
 		return "HealthStack";
 	}
 	
+	// signup user
+	
+	@GetMapping("/instruction")
+	public String instruction() {
+		return "instruction";
+	}
+	
+	@GetMapping("/register")
+	public String signup(Model model) {
+		model.addAttribute("user", new User());
+		return "register";
+	}
+	
+	 @PostMapping("/send-otp")
+	    public String sendOtp(@RequestParam("email") String email, HttpSession session, Model model) {
+	        // Email Format Check Karna
+	        if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+	            model.addAttribute("error", "Invalid Email Address!");
+	            return "register";
+	        }
+	        
+	        User user1 =  us.getUserByEmail(email);
+
+	        if (user1 != null) {
+	            model.addAttribute("error", "⚠️ This email is already registered. Please login or use another email.");
+	            return "register"; // same Thymeleaf page
+	        }
+
+	        // OTP Generate & Store Karna
+	        String otp = emailService.generateOtp();
+	        session.setAttribute("otp", otp);
+	        session.setAttribute("email", email);
+	        emailService.sendOtp(email, otp);
+
+	        model.addAttribute("email", email);
+	        return "verify";
+	    }
+	 
+	                                                             // OTP Verify Karna
+	    @PostMapping("/verify-otp")
+	    public String verifyOtp(@RequestParam("otp") String otp, HttpSession session, Model model) {
+	        String sessionOtp = (String) session.getAttribute("otp");
+
+	        if (sessionOtp != null && sessionOtp.equals(otp)) {
+	        	session.setAttribute("verified", true); // ✅ OTP verify hone pe flag set karo
+	            session.removeAttribute("otp"); // OTP ko remove kar diya taaki reuse na ho
+	            model.addAttribute("message", "OTP Verified Successfully!");
+	            return "success";
+	        } else {
+	            model.addAttribute("error", "Wrong OTP! Try Again.");
+	            return "verify";
+	        }
+	    }
+	    
+
+		@GetMapping("/signup2")
+		public String signup2(HttpSession session , Model model) {
+		    Boolean verified = (Boolean) session.getAttribute("verified");
+
+		    if (verified == null || !verified) {
+		        return "redirect:/register.html"; // ✅ Agar verified nahi hai toh wapas OTP lene bhej do
+		    }
+
+		    model.addAttribute("user", new User());
+		    return "signup2"; // ✅ Sirf verified users hi yahan aa sakte hain
+		}
+		
+		@PostMapping("/action")
+		public String action(@ModelAttribute User user , HttpSession session) {
+			 String email = (String) session.getAttribute("email");
+		        if (email == null) {
+		            return "redirect:/register";
+		        }
+		        user.setEmail(email);
+		        user.setHealthId("HID" + System.currentTimeMillis());
+			us.saveUser(user);
+			 return "card";
+		}
+		
+		@GetMapping("/card")
+		public String card(HttpSession session, Model model) {
+		    User user = (User) session.getAttribute("user");
+		    if (user == null) {
+		        return "redirect:/register"; // Agar session me user nahi hai to register page bhejo
+		    }
+		    model.addAttribute("user", user);
+		    return "card";
+		}
+	    
+	    
+	//user signin
+		
+		 @PostMapping("/login")
+		    public String getUser(@ModelAttribute("user") User user,
+	                HttpSession session,Model model , RedirectAttributes redirectAttributes) {
+		    	
+		    	 User user1 = us.loginUser(user.getEmail(), user.getHealthId());
+		    	
+
+		        if (user1 != null) {
+		            // Sahi login - session me store karo
+		            session.setAttribute("loggedUser", user1);
+		            return "redirect:/userDashboard";
+		        } else {
+		            // Galat login - error message bhejo 
+		            redirectAttributes.addFlashAttribute("error", "❌ Wrong credentials, please try again.");
+		            model.addAttribute("user", user1);
+		            return "redirect:/test"; // redirect with flash message
+		        
+		            
+		        }
+		    }
+		 
+		  @GetMapping("/userDashboard")
+		    public String userDashboard(@ModelAttribute("user") User user , HttpSession session , Model model ) {
+		    	  User user1 = (User) session.getAttribute("loggedUser");
+		    	  
+		    	  if (user1 == null) {
+			            return "redirect:/test";
+			        }	  
+		    	  model.addAttribute("user", user1);
+		    	return "userDashboard";
+		    }
+		  	
+	
+	
 	@GetMapping("/signin")
 	public String signInPage(Model model) {
 		model.addAttribute("user", new User());
 		return "signin";
 	}
 	
-	@GetMapping("/register.html")
-	public String signup(Model model) {
-		model.addAttribute("user", new User());
-		return "register";
-	}
 	
-	@PostMapping("/action")
-	public String action(@ModelAttribute User user , HttpSession session) {
-		 String email = (String) session.getAttribute("email");
-	        if (email == null) {
-	            return "redirect:/register";
-	        }
-	        user.setEmail(email);
-	        user.setHealthId("HID" + System.currentTimeMillis());
-		us.saveUser(user);
-		 return "card";
-	}
 	
 	@Autowired
 	RemarkRepository remarkRepo;
@@ -117,32 +229,7 @@ public class UserComponent {
 		
 	}
 	
-	@GetMapping("/instruction")
-	public String instruction() {
-		return "instruction";
-	}
-	
-	@GetMapping("/signup2")
-	public String signup2(HttpSession session , Model model) {
-	    Boolean verified = (Boolean) session.getAttribute("verified");
 
-	    if (verified == null || !verified) {
-	        return "redirect:/register.html"; // ✅ Agar verified nahi hai toh wapas OTP lene bhej do
-	    }
-
-	    model.addAttribute("user", new User());
-	    return "signup2"; // ✅ Sirf verified users hi yahan aa sakte hain
-	}
-	
-	@GetMapping("/card")
-	public String card(HttpSession session, Model model) {
-	    User user = (User) session.getAttribute("user");
-	    if (user == null) {
-	        return "redirect:/register"; // Agar session me user nahi hai to register page bhejo
-	    }
-	    model.addAttribute("user", user);
-	    return "card";
-	}
 	
 	@GetMapping("/success")
 	@ResponseBody
@@ -157,46 +244,9 @@ public class UserComponent {
 	
 	
 	
-	 @PostMapping("/send-otp")
-	    public String sendOtp(@RequestParam("email") String email, HttpSession session, Model model) {
-	        // Email Format Check Karna
-	        if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
-	            model.addAttribute("error", "Invalid Email Address!");
-	            return "register";
-	        }
-	        
-	        User user1 =  us.getUserByEmail(email);
-
-	        if (user1 != null) {
-	            model.addAttribute("error", "⚠️ This email is already registered. Please login or use another email.");
-	            return "register"; // same Thymeleaf page
-	        }
-
-	        // OTP Generate & Store Karna
-	        String otp = emailService.generateOtp();
-	        session.setAttribute("otp", otp);
-	        session.setAttribute("email", email);
-	        emailService.sendOtp(email, otp);
-
-	        model.addAttribute("email", email);
-	        return "verify";
-	    }
+	
 	 
-	 // OTP Verify Karna
-	    @PostMapping("/verify-otp")
-	    public String verifyOtp(@RequestParam("otp") String otp, HttpSession session, Model model) {
-	        String sessionOtp = (String) session.getAttribute("otp");
-
-	        if (sessionOtp != null && sessionOtp.equals(otp)) {
-	        	session.setAttribute("verified", true); // ✅ OTP verify hone pe flag set karo
-	            session.removeAttribute("otp"); // OTP ko remove kar diya taaki reuse na ho
-	            model.addAttribute("message", "OTP Verified Successfully!");
-	            return "success";
-	        } else {
-	            model.addAttribute("error", "Wrong OTP! Try Again.");
-	            return "verify";
-	        }
-	    }
+	
 	    
 	    @Autowired
 	    private DoctorService doctorService;
@@ -270,37 +320,9 @@ public class UserComponent {
 	        return "redirect:/fetch-patient";
 	    }
 	    
-	    @PostMapping("/login")
-	    public String getUser(@ModelAttribute("user") User user,
-                HttpSession session,Model model , RedirectAttributes redirectAttributes) {
-	    	
-	    	 User user1 = us.loginUser(user.getEmail(), user.getHealthId());
-	    	
-
-	        if (user1 != null) {
-	            // Sahi login - session me store karo
-	            session.setAttribute("loggedUser", user1);
-	            return "redirect:/userDashboard";
-	        } else {
-	            // Galat login - error message bhejo 
-	            redirectAttributes.addFlashAttribute("error", "❌ Wrong credentials, please try again.");
-	            model.addAttribute("user", user1);
-	            return "redirect:/test"; // redirect with flash message
-	        
-	            
-	        }
-	    }
+	 
 	    
-	    @GetMapping("/userDashboard")
-	    public String userDashboard(@ModelAttribute("user") User user , HttpSession session , Model model ) {
-	    	  User user1 = (User) session.getAttribute("loggedUser");
-	    	  
-	    	  if (user1 == null) {
-		            return "redirect:/test";
-		        }	  
-	    	  model.addAttribute("user", user1);
-	    	return "userDashboard";
-	    }
+	  
 	    
 	    @GetMapping("/doctorInstruction")
 	    public String doctorInstruction() {
